@@ -7,6 +7,35 @@ let equal = document.getElementById("equal");
 let clear = document.getElementById("clear");
 let erase = document.getElementById("erase");
 
+
+
+// custom cursor
+
+const cursor = document.querySelector(".cursor");
+
+window.addEventListener("mousemove", (e) => {
+  cursor.style.left = e.pageX + "px";
+  cursor.style.top = e.pageY + "px";
+  cursor.setAttribute("data-fromTop", cursor.offsetTop - scrollY);
+  // console.log(e)
+});
+window.addEventListener("scroll", () => {
+  const fromTop = cursor.getAttribute("data-fromTop");
+  cursor.style.top = scrollY + parseInt(fromTop) + "px";
+  console.log(scrollY);
+});
+window.addEventListener("click", () => {
+  if (cursor.classList.contains("click")) {
+    cursor.classList.remove("click");
+    void cursor.offsetWidth; // trigger a DOM reflow
+    cursor.classList.add("click");
+  } else {
+    cursor.classList.add("click");
+  }
+});
+
+// custom cursor
+
 window.onload = () => {
   input.value = "";
 };
@@ -37,8 +66,7 @@ equal.addEventListener("click", () => {
       input.value = solution.toFixed(2);
     }
   } catch (err) {
-
-    alert("Invalid Input");
+    input.value = "Syntax ERROR"
   }
 });
 
@@ -50,3 +78,6 @@ clear.addEventListener("click", () => {
 erase.addEventListener("click", () => {
   input.value = input.value.substr(0, input.value.length - 1);
 });
+
+
+
